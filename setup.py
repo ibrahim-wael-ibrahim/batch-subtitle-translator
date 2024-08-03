@@ -16,7 +16,7 @@ setup(
     },
     author="Ibrahim Wael Ibrahim",
     author_email="ibrahim.wael.ibrahim@outlook.com",
-    description="A tool for translating subtitles str files from en to ar ",
+    description="A tool for translating subtitles str files from en to ar",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url="https://github.com/ibrahim-wael-ibrahim/batch-subtitle-translator",

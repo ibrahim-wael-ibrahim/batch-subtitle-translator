@@ -97,9 +97,14 @@ def batch_translate_subtitles(input_dir, output_dir, src_lang='en', dest_lang='a
     progress_bar.close()
 
 def main():
+    import sys
+    from batch_subtitle_translator import translate_file  # Adjust if necessary
+    if len(sys.argv) != 3:
+        print("Usage: translate-subtitles <input_dir> <output_dir>")
+        sys.exit(1)
     input_dir = sys.argv[1]
     output_dir = sys.argv[2]
-    batch_translate_subtitles(input_dir, output_dir)
-
+    translate_file(input_dir, output_dir)
+    
 if __name__ == "__main__":
     main()
