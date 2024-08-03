@@ -11,28 +11,28 @@ cd $HIDDEN_DIR
 
 # Make the Python script executable
 chmod +x $HIDDEN_DIR/batch_subtitle_translator/translator.py
-chmod +x scripts/translate
+chmod +x scripts/translate.sh
 
 # Install the package
 pip install .
 
 # Define the alias command
-ALIAS_CMD="alias translate='translate-subtitles $(pwd) $(pwd)'"
+#ALIAS_CMD="alias translate='translate-subtitles $(pwd) $(pwd)'"
 
 # Add the alias to the appropriate shell configuration file
-if [ -f ~/.bashrc ]; then
-    echo $ALIAS_CMD >> ~/.bashrc
-    source ~/.bashrc
-elif [ -f ~/.bash_profile ]; then
-    echo $ALIAS_CMD >> ~/.bash_profile
-    source ~/.bash_profile
-elif [ -f ~/.zshrc ]; then
-    echo $ALIAS_CMD >> ~/.zshrc
-    source ~/.zshrc
-else
-    echo "No suitable shell configuration file found."
-    exit 1
-fi
+# if [ -f ~/.bashrc ]; then
+#     echo $ALIAS_CMD >> ~/.bashrc
+#     source ~/.bashrc
+# elif [ -f ~/.bash_profile ]; then
+#     echo $ALIAS_CMD >> ~/.bash_profile
+#     source ~/.bash_profile
+# elif [ -f ~/.zshrc ]; then
+#     echo $ALIAS_CMD >> ~/.zshrc
+#     source ~/.zshrc
+# else
+#     echo "No suitable shell configuration file found."
+#     exit 1
+# fi
 
 
 
