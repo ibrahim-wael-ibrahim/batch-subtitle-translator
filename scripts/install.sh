@@ -9,11 +9,15 @@ git clone https://github.com/ibrahim-wael-ibrahim/batch-subtitle-translator.git 
 # Navigate to the hidden directory
 cd $HIDDEN_DIR
 
+# Make the Python script executable
+chmod +x $HIDDEN_DIR/batch_subtitle_translator/translator.py
+chmod +x scripts/translate
+
 # Install the package
 pip install .
 
 # Define the alias command
-ALIAS_CMD="alias translate='translate-subtitles $(pwd) $(pwd) '"
+ALIAS_CMD="alias translate='translate-subtitles $(pwd) $(pwd)'"
 
 # Add the alias to the appropriate shell configuration file
 if [ -f ~/.bashrc ]; then
@@ -30,7 +34,6 @@ else
     exit 1
 fi
 
-# Make the Python script executable
-chmod +x $HIDDEN_DIR/batch_subtitle_translator/translator.py
+
 
 echo "Installation complete. You can now use the 'translate' command."

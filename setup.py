@@ -16,6 +16,7 @@ setup(
             'translate-subtitles=batch_subtitle_translator.translator:main',
         ],
     },
+    scripts=['scripts/translate'],
     author="Ibrahim Wael Ibrahim",
     author_email="ibrahim.wael.ibrahim@outlook.com",
     description="A tool for translating subtitles str files from en to ar",
