@@ -57,7 +57,7 @@ def find_subtitle_files(input_dir, file_extension=".srt"):
                 subtitle_files.append(os.path.join(root, file))
     return subtitle_files
 
-def translate_file(input_file, output_dir, src_lang, dest_lang):
+def translate_file(input_file, input_dir, output_dir, src_lang, dest_lang):
     relative_path = os.path.relpath(input_file, input_dir)
 
     if not input_file.endswith("_en.srt"):
@@ -89,7 +89,7 @@ def batch_translate_subtitles(input_dir, output_dir, src_lang='en', dest_lang='a
     progress_bar = tqdm(total=len(files_to_translate), desc="Translating files", unit="file", bar_format=custom_bar_format)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = [executor.submit(translate_file, file, output_dir, src_lang, dest_lang) for file in files_to_translate]
+        futures = [executor.submit(translate_file, file, input_dir, output_dir, src_lang, dest_lang) for file in files_to_translate]
         for future in as_completed(futures):
             if future.result():
                 progress_bar.update(1)
@@ -97,8 +97,6 @@ def batch_translate_subtitles(input_dir, output_dir, src_lang='en', dest_lang='a
     progress_bar.close()
 
 def main():
-    import sys
-    from batch_subtitle_translator.translator import batch_translate_subtitles  # Correct import path
     if len(sys.argv) != 3:
         print("Usage: translate-subtitles <input_dir> <output_dir>")
         sys.exit(1)
