@@ -23,5 +23,23 @@ You can install the Batch Subtitle Translator using a single command. This comma
 Run the following command to install the package:
 
 ```sh
-curl -fsSL https://github.com/ibrahim-wael-ibrahim/batch-subtitle-translator/blob/main/scripts/install.sh | bash
+wget -nv -O- https://raw.githubusercontent.com/ibrahim-wael-ibrahim/batch-subtitle-translator/main/scripts/install.sh | bash
+
+```
+
+### uninstall Command
+
+Run the following command to uninstall the package:
+
+```sh
+pip uninstall batch_subtitle_translator
+
+```
+
+Check the Path:
+
+```sh
+which translate-subtitles
+
+
 ```
