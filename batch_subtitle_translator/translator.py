@@ -39,10 +39,9 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
 
                 translated_text = translate_text(translator, text, src_lang, dest_lang)
                 
-                # Split translated text into lines of appropriate length (you may adjust the length as needed)
-                max_length = 40  # Example max length of each line
-                translated_text_lines = [translated_text[i:i+max_length] for i in range(0, len(translated_text), max_length)]
-
+                # Split translated text into lines based on sentence endings for readability
+                translated_text_lines = re.split(r'(?<=[.!?]) +', translated_text)
+                
                 translated_block = f"{lines[0]}\n{timestamp}\n" + '\n'.join(translated_text_lines)
                 translated_blocks.append(translated_block)
             else:
