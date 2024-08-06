@@ -38,8 +38,12 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
                 text = ' '.join(text_lines)  # Combine text lines into a single string
 
                 translated_text = translate_text(translator, text, src_lang, dest_lang)
-                translated_block = f"{lines[0]}\n{timestamp}\n{translated_text}"
+                translated_text_lines = translated_text.split('\n')
+
+                translated_block = f"{lines[0]}\n{timestamp}\n" + '\n'.join(translated_text_lines)
                 translated_blocks.append(translated_block)
+            else:
+                translated_blocks.append(block)  # Handle cases where lines length is less than 2
 
             progress_bar.update(1)
 
@@ -48,6 +52,7 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
 
     with open(output_file, 'w', encoding='utf-8') as file:
         file.write(translated_content)
+
 
 def find_subtitle_files(input_dir, file_extension=".srt"):
     subtitle_files = []
