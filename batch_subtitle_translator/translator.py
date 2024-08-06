@@ -6,15 +6,18 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from deep_translator import GoogleTranslator
 import re
 
+
 def extract_subtitle_blocks(content):
-    return re.split(r'\n\n', content)
+    # For SRT format, split by double newlines
+    # For VTT format, split by double newlines
+    return re.split(r'\n\n+', content.strip())
 
 def translate_text(translator, text, src_lang, dest_lang):
     try:
         return translator.translate(text, source=src_lang, target=dest_lang)
     except Exception as e:
         print(f"Translation error: {str(e)}")
-        raise
+        return text  # Return original text in case of error
 
 def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
     translator = GoogleTranslator(source=src_lang, target=dest_lang)
@@ -22,6 +25,9 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
     with open(input_file, 'r', encoding='utf-8') as file:
         content = file.read()
 
+    # Check if the file is in VTT format
+    is_vtt = content.strip().startswith('WEBVTT')
+    
     subtitle_blocks = extract_subtitle_blocks(content)
     translated_blocks = []
 
@@ -32,21 +38,35 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
     for block in subtitle_blocks:
         if block.strip():
             lines = block.split('\n')
-            if len(lines) > 2:
-                timestamp = lines[1]
-                text_lines = lines[2:]
-                text = ' '.join(text_lines)  # Combine text lines into a single string
+            
+            if is_vtt:
+                # Handle WEBVTT format (no index)
+                if len(lines) >= 2 and '-->' in lines[0]:
+                    timestamp = lines[0]
+                    text_lines = lines[1:]
+                    text = '\n'.join(text_lines)
 
-                translated_text = translate_text(translator, text, src_lang, dest_lang)
-                
-                # Split translated text into lines of appropriate length (adjust length as needed)
-                max_length = 40  # Example max length of each line
-                translated_text_lines = [translated_text[i:i+max_length] for i in range(0, len(translated_text), max_length)]
+                    translated_text = translate_text(translator, text, src_lang, dest_lang)
+                    translated_block = f"{timestamp}\n{translated_text}"
+                    translated_blocks.append(translated_block)
+                else:
+                    # Unexpected format case
+                    translated_blocks.append(block)
 
-                translated_block = f"{lines[0]}\n{timestamp}\n" + '\n'.join(translated_text_lines)
-                translated_blocks.append(translated_block)
             else:
-                translated_blocks.append(block)  # Handle cases where lines length is less than 2
+                # Handle SRT format (with index)
+                if len(lines) >= 3 and '-->' in lines[1]:
+                    index = lines[0]
+                    timestamp = lines[1]
+                    text_lines = lines[2:]
+                    text = '\n'.join(text_lines)
+
+                    translated_text = translate_text(translator, text, src_lang, dest_lang)
+                    translated_block = f"{index}\n{timestamp}\n{translated_text}"
+                    translated_blocks.append(translated_block)
+                else:
+                    # Unexpected format case
+                    translated_blocks.append(block)
 
             progress_bar.update(1)
 
@@ -55,11 +75,6 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
 
     with open(output_file, 'w', encoding='utf-8') as file:
         file.write(translated_content)
-
-# Function to extract subtitle blocks
-def extract_subtitle_blocks(content):
-    return re.split(r'\n\n', content)
-
 
 def find_subtitle_files(input_dir, file_extension=".srt"):
     subtitle_files = []
