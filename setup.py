@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="batch_subtitle_translator",
-    version="0.1",
+    version="0.2",  # Updated version
     packages=find_packages(),
     install_requires=[
         "tqdm",
@@ -14,7 +14,7 @@ setup(
             'translate-subtitles=batch_subtitle_translator.translator:main',
         ],
     },
-    scripts=['scripts/translate.sh' , 'scripts/addEnInEnd.sh'],  # Correct the script path here
+    scripts=['scripts/translate.sh', 'scripts/addEnInEnd.sh'],
     author="Ibrahim Wael Ibrahim",
     author_email="ibrahim.wael.ibrahim@outlook.com",
     description="A tool for translating subtitles str files from en to ar",

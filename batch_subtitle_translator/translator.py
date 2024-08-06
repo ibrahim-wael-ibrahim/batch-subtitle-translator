@@ -35,7 +35,7 @@ def translate_subtitle(input_file, output_file, src_lang='en', dest_lang='ar'):
             if len(lines) > 2:
                 timestamp = lines[1]
                 text_lines = lines[2:]
-                text = '\n'.join(text_lines)
+                text = ' '.join(text_lines)  # Combine text lines into a single string
 
                 translated_text = translate_text(translator, text, src_lang, dest_lang)
                 translated_block = f"{lines[0]}\n{timestamp}\n{translated_text}"
